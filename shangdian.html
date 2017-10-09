@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/商店.css" />
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+		<script>
+			$(function(){
+                var topspan=$(".top span:first")
+				var top=$(".top")
+				var spans=$(".span>span")
+				var nav=$(".nav")
+				var spfl=$(".spfl")
+				var bottom=$(".content-bottom")
+				var pphd=$(".pphd")
+				var par=$(".content-panter")
+				var imgs=$(".content-panter li")
+			    var lisss=$(".content-bottom li")
+				
+				top.on("click","span",function(){
+					var bad=$(this).index()
+                  //点击先变背景图y轴的距离
+                 $(this).css("background-position-y","-15px")
+                 //每次点击的时候其他兄弟的背景图y轴又变回来初始位置
+                 $(this).siblings().css("background-position-y","0px")
+                 //改变nav和spfl的颜色
+                 if(bad==0){nav.css("background-color","#3e5fa2"),spfl.css("background-color","rgba(67,97,167,0.4)")}
+			     if(bad==1){nav.css("background-color","#afd202"),spfl.css("background-color","rgba(174,213,0,0.4)")}
+			     if(bad==2){nav.css("background-color","#f9ad0c"),spfl.css("background-color","rgba(251,174,14,0.4)")}
+			     if(bad==3){nav.css("background-color","#0abfd0"),spfl.css("background-color","rgba(12,192,209,0.4)")}
+			     if(bad==4){nav.css("background-color","#de205c"),spfl.css("background-color","rgba(225,20,85,0.4)")}
+			     if(bad==5){nav.css("background-color","#bc39d7"),spfl.css("background-color","rgba(184,56,211,0.4)")}
+			     
+				})
+				//自执行一次点击打钩
+				topspan.trigger('click')
+				console.log(topspan)
+				//点击图片淡入
+				bottom.on("click","li",function(){
+					//保存点击的每个索引值
+					var index=$(this).index()                                                                                                         
+					//点击后让所有的背景图隐藏
+					imgs.css("display","none")
+					//再让点击的当前索引值对应的背景图淡入
+					imgs.eq(index).fadeIn(2000)
+					//让点击的li添加样式yyy的时候，让他的兄弟都移除yyy的样式
+					$(this).addClass("yyy").siblings().removeClass("yyy")
+					//点击li后再获取里面的span
+					var sjx=$(".content-bottom span")
+					//点击li后，对应索引值的span添加样式www
+					sjx.eq(index).addClass("www")
+					//点击的兄弟的孩子移除样式www，虽然li里面不只是有span还有p，但
+					//移除的是孩子的样式www，p本来就没有样式www，有没有移除www对他没有影响
+					$(this).siblings().children().removeClass("www")
+				})
+				
+				//品牌活动轮播图
+				pphd.on("click","li",function(){
+					
+					$(this).addClass("zzz").siblings().removeClass("zzz")
+					var spans=$(".pphd li span")
+					spans.eq($(this).index()-1).addClass("sjx")
+					$(this).siblings().children().removeClass("sjx")
+					//鞋子的轮播图
+					var fu=$(".fu")
+					var chil=$(".chlid")
+					//获取要移动的距离
+					//innerWidth():孩子的宽度，包括内边距
+					var left=($(this).index()-1)*chil.innerWidth()
+					//animate是用来做动画效果的,stop是用来停止前一步动画效果，执行下一步动画效果
+					fu.stop().animate({left:-left},1000)
+//                   fu.css("left",-left)
+				})
+				
+				/*
+				 定时器
+				 */
+				var i=0
+				var timer=null
+				//定时器自带每隔一段时间执行一次函数，不用调用函数来执行
+				timer=setInterval(change,2000);
+				function change(){
+					i++
+					if(i>4){i=0}
+					//获取li的宽度
+					var imgsWith=imgs.width()
+				
+					//定时器每隔2秒执行一次函数，函数里的动画每走一次left花费一秒
+					par.animate({left:-imgsWith*i},1000)
+					//改变轮播图下面的颜色跟随
+					lisss.eq(i).addClass("yyy").siblings().removeClass("yyy")
+					//改变轮播图下面的三角形
+				    lisss.eq(i).children().addClass("www")
+				    lisss.eq(i).siblings().children().removeClass("www")
+				}
+				//当鼠标移动到轮播图下面时，清理定时器
+				bottom.mouseenter(function(){
+					clearInterval(timer);
+					//清除定时器的时候轮播图回到原位
+					par.animate({left:0},500);
+					//跟随色也回到原位
+					lisss.eq(0).addClass("yyy").siblings().removeClass("yyy")
+				    //三角形回到原位
+				    lisss.eq(0).children().addClass("www")
+				    lisss.eq(0).siblings().children().removeClass("www")
+				    
+				})
+
+				
+
+      
+ 
+				
+				
+				
+		
+			})
+            
+				
+			
+		</script>
+
+
+	</head>
+	<body>
+		<div class="container">
+			
+			<div class="top">
+				<img src="images/logo.gif" />
+				<input type="text" placeholder="请输入商品名称" />
+				<div class="span">
+				<span style="background-position:0px 0;"></span>
+				<span style="background-position:-20px  0;"></span>
+				<span style="background-position: -40px 0;"></span>
+				<span style="background-position: -60px 0;"></span>
+				<span style="background-position: -80px 0;"></span>
+				<span style="background-position: -100px  0;"></span>
+				</div>
+				
+				
+			
+			</div>
+			<!--上面是top-->
+			<ul class="nav">
+				<li>首页</li>
+				<li>品牌</li>
+				<li>女装</li>
+				<li>男装</li>
+				<li>鞋包配饰</li>
+				
+			</ul>
+			<!--上面是nav-->
+			<div class="content">
+			   <div class="content-left">
+			   	<p class="spfl"><span>商品分类</span></p>
+			   	<p class="dep"><span>推荐品牌</span></p>
+			   	<ul class="ppai">
+			   		<li class="ppai1">
+			   		<span>耐克</span>
+			   		<span>阿迪达斯</span>
+			   		<span>达芙妮</span>
+			   		<span>李宁</span>
+			   		<span>安踏</span>
+			   		<span>奥康</span>
+			   		<span>骆驼</span>
+			   		<span>特步</span>
+			   		<h3>女装</h3>
+			   		</li>
+			   		<li class="ppai1">
+			   		<span>呢大衣</span>
+			   		<span>T恤</span>
+			   		<span>羽绒</span>
+			   		<span>衬衫</span>
+			   		<span>羊绒衫</span>
+			   		<span>针织</span>
+			   		<span>连衣裙</span>
+			   		<span>皮外套</span>
+			   		<h3>男装</h3>
+			   		</li>
+			   		<li class="ppai1">
+			   		<span>衬衫</span>
+			   		<span>T恤衫</span>
+			   		<span>夹克</span>
+			   		<span>大皮衣</span>
+			   		<span>风衣</span>
+			   		<span>牛仔裤</span>
+			   		<span>西服</span>
+			   		<span>卫衣</span>
+			   		<h3>鞋包装饰</h3>
+			   		</li>
+			   		<li class="ppai1">
+			   		<span>围巾</span>
+			   		<span>旅行箱</span>
+			   		<span>真皮包</span>
+			   		<span>韩版</span>
+			   		<span>达芙妮</span>
+			   		<span>单肩包</span>
+			   		<span>毛绒</span>
+			   		<span>清仓靴子</span>
+			   	
+			   		</li>
+			   	</ul>
+			   	
+			   </div>
+				<!--上面是content-left-->
+				<div class="content-right">
+					<div class="content-centre">
+						<ul class="content-panter">
+							<li style="background-image: url(images/ads/1.jpg);"></li>
+							<li style="background-image: url(images/ads/2.jpg);"></li>
+							<li style="background-image: url(images/ads/3.jpg);"></li>
+							<li style="background-image: url(images/ads/4.jpg);"></li>
+							<li style="background-image: url(images/ads/5.jpg);"></li>
+						</ul>
+						
+						<ul class="content-bottom">
+							<li class="yyy" style="margin-left: 0;"> <p>相约情人节</p> <p>全场119元起</p><span class="www"></span> </li>
+							<li><p>新款上线</p> <p>全场357元起</p><span></span></li>
+							<li><p>愤怒小鸟特卖</p> <p>全场89元</p><span></span></li>
+							<li><p>男鞋促销第一</p> <p>全场3.1折起</p><span></span></li>
+							<li><p>春季新品发布</p> <p>全场4.1折起</p><span></span></li>
+							
+						</ul>
+
+					</div>
+					<!--上面是中间的轮播图-->
+					
+					
+					<div class="right-right">
+						<div class="right-top">
+							<img src="images/upload/20120216.jpg" />
+						</div>
+						
+						<ul class="right-bottom">
+							<li>最新动态</li>
+							<li>[活动]伊伴春鞋迎春大促</li>
+							<li>[活动]千百度冬靴新品火热让利</li>
+							<li>[活动]COEY秋冬新品全场2.3折起</li>
+							<li>[活动]伊伴春鞋迎春大促</li>
+							<li>[活动]千百度冬靴新品火热让利</li>
+						</ul>
+						
+					</div>
+				</div>
+					<!--上面是轮播图右边-->
+				
+					<div class="bottom-b">
+						<ul class="pphd">
+							<h3>品牌活动</h3>
+							<li class="zzz">运动<span class="sjx" ></span> </li>
+							<li>女鞋<span></span></li>
+							<li>男鞋<span></span></li>
+							<li>童鞋<span></span></li>
+						</ul>
+						
+						<div class="fu">
+							<ul class="chlid">
+								<li><img src="images/upload/20120217.jpg" /><p>耐克</p> </li>
+								<li><img src="images/upload/20120218.jpg" /> <p>阿迪达斯</p> </li>
+								<li><img src=" images/upload/20120219.png" /><p>李宁</p> </li>
+								<li><img src="images/upload/20120220.png" /><p>安踏</p> </li>
+								
+							</ul>
+							
+							<ul class="chlid">
+								<li><img src="images/upload/20120217.jpg" /><p>耐克</p> </li>
+								<li><img src="images/upload/20120218.jpg" /> <p>阿迪达斯</p> </li>
+								<li><img src=" images/upload/20120219.png" /><p>李宁</p> </li>
+								<li><img src="images/upload/20120220.png" /><p>安踏</p> </li>
+								
+							</ul>
+							<ul class="chlid">
+								<li><img src="images/upload/20120217.jpg" /><p>耐克</p> </li>
+								<li><img src="images/upload/20120218.jpg" /> <p>阿迪达斯</p> </li>
+								<li><img src=" images/upload/20120219.png" /><p>李宁</p> </li>
+								<li><img src="images/upload/20120220.png" /><p>安踏</p> </li>
+								
+							</ul>
+							<ul class="chlid">
+								<li><img src="images/upload/20120217.jpg" /><p>耐克</p> </li>
+								<li><img src="images/upload/20120218.jpg" /> <p>阿迪达斯</p> </li>
+								<li><img src=" images/upload/20120219.png" /><p>李宁</p> </li>
+								<li><img src="images/upload/20120220.png" /><p>安踏</p> </li>
+								
+							</ul>
+							
+						</div>
+						
+						
+					</div>
+				
+				
+				
+				
+				
+			</div>
+			
+			
+			
+			
+			
+			
+		</div>
+	</body>
+</html>
